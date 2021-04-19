@@ -22,7 +22,7 @@ from apps.user.urls import urlpatterns as user_routes
 urlpatterns = [
     # Django Admin
     path('admin/', admin.site.urls),
-    
+
     # Django REST framework (browsable API)
     path('api-auth/', include('rest_framework.urls')),
 

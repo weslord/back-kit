@@ -41,7 +41,6 @@ class AbstractEmailUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
-
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
