@@ -144,6 +144,33 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# Logging
+# https://docs.djangoproject.com/en/3.2/topics/logging/
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+        'apps': {'level': 'DEBUG'},
+        'project': {'level': 'DEBUG'},
+    },
+    'formatters': {
+        'what_where': {
+            'format': '%(levelname)s\t %(message)s [%(name)s.%(funcName)s:%(lineno)s]',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'what_where',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+    },
+}
+
+
 # Project-specific
 
 APP_NAME = '___CHANGEME___'
