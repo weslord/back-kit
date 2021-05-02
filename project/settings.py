@@ -151,12 +151,12 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'loggers': {
-        'apps': {'level': 'DEBUG'},
-        'project': {'level': 'DEBUG'},
+        'apps': {'level': 'DEBUG', 'handlers': ['console']},
+        'project': {'level': 'DEBUG', 'handlers': ['console']},
     },
     'formatters': {
         'what_where': {
-            'format': '%(levelname)s\t %(message)s [%(name)s.%(funcName)s:%(lineno)s]',
+            'format': '%(levelname)s\t[%(name)s:%(lineno)s>%(funcName)s()]\n\t%(message)s',
         },
     },
     'handlers': {
@@ -164,10 +164,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'what_where',
         },
-    },
-    'root': {
-        'handlers': ['console'],
-    },
+    }
 }
 
 
