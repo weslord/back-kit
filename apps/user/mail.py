@@ -15,4 +15,4 @@ def send_reset_password_email(user, reset_token):
 
 
 def send_welcome_email(user):
-    log.debug('EMAIL: WelcomeUser', user)
+    log.debug(f'EMAIL: WelcomeUser {str(user)}')
