@@ -10,7 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import json
+import os
 from pathlib import Path
+
+
+def getenv(key):
+    if key not in os.environ:
+        raise ValueError(f'Missing environment variable: {key}')
+    return os.environ.get(key)
+
+
+def getenv_list(key):
+    if key not in os.environ:
+        raise ValueError(f'Missing environment variable: {key}')
+    return json.loads(os.environ.get(key))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +35,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '__CHANGEME__'
+SECRET_KEY = getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = getenv_list('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -55,9 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+CORS_ALLOWED_ORIGINS = getenv_list('CORS_ALLOWED_ORIGINS')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -170,8 +183,8 @@ LOGGING = {
 
 # Project-specific
 
-APP_NAME = '___CHANGEME___'
+APP_NAME = getenv('APP_NAME')
 
-WEB_URL = '__CHANGEME__'
+WEB_URL = getenv('WEB_URL')
 RESET_PASSWORD_URL = '{}{}'.format(WEB_URL, '/reset-password/{reset_token}/{user_id}')
 
