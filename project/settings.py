@@ -80,7 +80,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',  # required for browsable api
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'project.permissions.AllowNone',
+    ],
 }
 
 ROOT_URLCONF = 'project.urls'
@@ -201,4 +204,3 @@ APP_NAME = getenv('APP_NAME')
 
 WEB_URL = getenv('WEB_URL')
 RESET_PASSWORD_URL = '{}{}'.format(WEB_URL, '/reset-password/{reset_token}/{user_id}')
-
