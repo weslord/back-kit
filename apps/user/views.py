@@ -8,7 +8,7 @@ from .serializers import (
     UserSerializer,
     CustomAuthTokenSerializer,
     ForgotPasswordSerializer,
-    ResetPasswordSerializer
+    ResetPasswordSerializer,
 )
 
 
@@ -27,9 +27,9 @@ class UserCreate(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        token = Token.objects.create(user_id=response.data['id'])
+        token = Token.objects.create(user_id=response.data["id"])
         return Response(
-            {'token': token.key, 'userId': token.user_id},
+            {"token": token.key, "userId": token.user_id},
             status=status.HTTP_201_CREATED,
         )
 

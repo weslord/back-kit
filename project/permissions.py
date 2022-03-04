@@ -16,9 +16,9 @@ class AllowNone(BasePermission):
     """
 
     def has_permission(self, request, view):
-        msg = f'Undefined permissions_classes for {view.__class__}'
+        msg = f"Undefined permissions_classes for {view.__class__}"
 
-        if (settings.DEBUG):
+        if settings.DEBUG:
             raise ImproperlyConfigured(msg)
         else:
             log.error(msg)

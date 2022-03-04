@@ -11,10 +11,8 @@ from .mail import send_welcome_email, send_reset_password_email
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'password', 'is_admin')
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
+        fields = ("id", "email", "password", "is_admin")
+        extra_kwargs = {"password": {"write_only": True}}
 
     def validate_email(self, value):
         norm_email = value.lower()
@@ -28,26 +26,24 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, obj, validated_data):
-        password = validated_data.pop('password', None)
+        password = validated_data.pop("password", None)
         if password:
             obj.set_password(password)
         return super().update(obj, validated_data)
 
 
 class CustomAuthTokenSerializer(AuthTokenSerializer):
-    '''
+    """
     Override AuthTokenSerializer to accept email field instead of username
-    '''
+    """
+
     username = None
-    email = serializers.CharField(
-        label=_("Email"),
-        write_only=True
-    )
+    email = serializers.CharField(label=_("Email"), write_only=True)
 
     def validate(self, attrs):
-        attrs['username'] = attrs['email'].lower()
+        attrs["username"] = attrs["email"].lower()
         attrs = super().validate(attrs)
-        del attrs['username']
+        del attrs["username"]
         return attrs
 
 
@@ -55,7 +51,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True)
 
     def create(self, validated_data):
-        email = validated_data['email'].lower()
+        email = validated_data["email"].lower()
         try:
             user = get_user_model().objects.get(email=email)
         except get_user_model().DoesNotExist:
@@ -73,13 +69,13 @@ class ResetPasswordSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
-        token = validated_data['token']
-        user_id = validated_data['user_id']
-        password = validated_data['password']
+        token = validated_data["token"]
+        user_id = validated_data["user_id"]
+        password = validated_data["password"]
 
         user = get_user_model().objects.get(id=user_id)
         if not default_token_generator.check_token(user, token):
-            raise ParseError(detail='Invalid token')
+            raise ParseError(detail="Invalid token")
 
         user.set_password(password)
         user.save()

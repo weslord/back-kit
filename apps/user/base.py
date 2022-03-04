@@ -26,29 +26,31 @@ class UserManager(BaseUserManager):
 
 
 class AbstractEmailUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), max_length=255, unique=True)
+    email = models.EmailField(_("email address"), max_length=255, unique=True)
 
     is_admin = models.BooleanField(
-        _('admin status'),
+        _("admin status"),
         default=False,
-        help_text=_('Designates whether the user can log into this admin site.')
+        help_text=_("Designates whether the user can log into this admin site."),
     )
     is_active = models.BooleanField(
-        _('active'),
+        _("active"),
         default=True,
-        help_text=_('Designates whether this user should be treated as '
-                    'active. Unselect this instead of deleting accounts.')
+        help_text=_(
+            "Designates whether this user should be treated as "
+            "active. Unselect this instead of deleting accounts."
+        ),
     )
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:
         abstract = True
-        ordering = ['email']
+        ordering = ["email"]
 
     def clean(self):
         super().clean()

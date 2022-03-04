@@ -19,13 +19,13 @@ import sys
 
 def getenv(key):
     if key not in os.environ:
-        raise ValueError(f'Missing environment variable: {key}')
+        raise ValueError(f"Missing environment variable: {key}")
     return os.environ.get(key)
 
 
 def getenv_list(key):
     if key not in os.environ:
-        raise ValueError(f'Missing environment variable: {key}')
+        raise ValueError(f"Missing environment variable: {key}")
     return json.loads(os.environ.get(key))
 
 
@@ -37,77 +37,76 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv('SECRET_KEY')
+SECRET_KEY = getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEV_DATABASE = getenv('DEV_DATABASE') == 'True'
-DEBUG = getenv('DEBUG') == 'True'
+DEV_DATABASE = getenv("DEV_DATABASE") == "True"
+DEBUG = getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = getenv_list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = getenv_list("ALLOWED_HOSTS")
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
-
-    'apps.user',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "corsheaders",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "apps.user",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = getenv_list('CORS_ALLOWED_ORIGINS')
+CORS_ALLOWED_ORIGINS = getenv_list("CORS_ALLOWED_ORIGINS")
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         # TokenAuth must come first, otherwise we send 403 responses on bad tokens when we want 401
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',  # for browsable api
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",  # for browsable api
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'project.permissions.AllowNone',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "project.permissions.AllowNone",
     ],
 }
 
-ROOT_URLCONF = 'project.urls'
+ROOT_URLCONF = "project.urls"
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = "user.User"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'project.wsgi.application'
+WSGI_APPLICATION = "project.wsgi.application"
 
 
 # Database
@@ -115,12 +114,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 if DEV_DATABASE:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
     if os.getenv("DATABASE_URL", None) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
@@ -132,16 +131,16 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -149,9 +148,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -163,49 +162,49 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Enable gzip for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'loggers': {
-        'apps': {'level': 'DEBUG', 'handlers': ['console']},
-        'project': {'level': 'DEBUG', 'handlers': ['console']},
+    "version": 1,
+    "disable_existing_loggers": False,
+    "loggers": {
+        "apps": {"level": "DEBUG", "handlers": ["console"]},
+        "project": {"level": "DEBUG", "handlers": ["console"]},
     },
-    'formatters': {
-        'what_where': {
-            'format': '%(levelname)s\t[%(name)s:%(lineno)s>%(funcName)s()]\n\t%(message)s',
+    "formatters": {
+        "what_where": {
+            "format": "%(levelname)s\t[%(name)s:%(lineno)s>%(funcName)s()]\n\t%(message)s",
         },
     },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'what_where',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "what_where",
         },
-    }
+    },
 }
 
 
 # Project-specific
 
-APP_NAME = getenv('APP_NAME')
+APP_NAME = getenv("APP_NAME")
 
-WEB_URL = getenv('WEB_URL')
-RESET_PASSWORD_URL = '{}{}'.format(WEB_URL, '/auth/reset-password/{reset_token}/{user_id}')
+WEB_URL = getenv("WEB_URL")
+RESET_PASSWORD_URL = "{}{}".format(WEB_URL, "/auth/reset-password/{reset_token}/{user_id}")
 PASSWORD_RESET_TIMEOUT = 60 * 60  # 1 hour
 
-POSTMARK_API_KEY = getenv('POSTMARK_API_KEY')
-POSTMARK_SENDER_EMAIL = getenv('POSTMARK_SENDER_EMAIL')
+POSTMARK_API_KEY = getenv("POSTMARK_API_KEY")
+POSTMARK_SENDER_EMAIL = getenv("POSTMARK_SENDER_EMAIL")
