@@ -40,7 +40,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEV_DATABASE = getenv("DEV_DATABASE") == "True"
 DEBUG = getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = getenv_list("ALLOWED_HOSTS")
@@ -112,14 +111,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if DEV_DATABASE:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
+if len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
     if os.getenv("DATABASE_URL", None) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
