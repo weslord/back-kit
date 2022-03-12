@@ -5,3 +5,5 @@ exclude =
     env,
     __pycache__,
     migrations
+extend-ignore =
+   E203  # https://github.com/psf/black/issues/315
