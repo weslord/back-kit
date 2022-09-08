@@ -1,0 +1,10 @@
+#!/bin/env bash
+
+if [[ -z $VIRTUAL_ENV ]]; then
+    echo >&2 "Remember to activate your virtual environment"
+    exit 1
+fi
+
+python manage.py test
+
+exit $?
