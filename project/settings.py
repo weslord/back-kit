@@ -39,8 +39,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = getenv("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv("DEBUG") == "True"
+DJANGO_ENV = getenv("DJANGO_ENV") or "production"
+
+if DJANGO_ENV == "production":
+    DEBUG = False
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+else:
+    DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = getenv_list("ALLOWED_HOSTS")
 
