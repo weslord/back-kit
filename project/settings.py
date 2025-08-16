@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import dj_database_url
 import json
 import os
 from pathlib import Path
-import sys
+
+import dj_database_url
 
 
 def getenv(key):
@@ -43,6 +43,7 @@ SECRET_KEY = getenv("SECRET_KEY")
 DEBUG = getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = getenv_list("ALLOWED_HOSTS")
+CORS_ALLOWED_ORIGINS = getenv_list("CORS_ALLOWED_ORIGINS")
 
 
 # Application definition
@@ -72,20 +73,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = getenv_list("CORS_ALLOWED_ORIGINS")
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        # TokenAuth must come first, otherwise we send 403 responses on bad tokens when we want 401
-        "rest_framework.authentication.TokenAuthentication",
-        "rest_framework.authentication.SessionAuthentication",  # for browsable api
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "project.permissions.AllowNone",
-    ],
-}
-
 ROOT_URLCONF = "project.urls"
+APPEND_SLASH = not DEBUG  # Be conservative in development, generous in production
 
 AUTH_USER_MODEL = "user.User"
 
@@ -111,12 +100,9 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
-    DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-    }
+DATABASES = {
+    "default": dj_database_url.parse(getenv("DATABASE_URL")),
+}
 
 
 # Password validation
@@ -138,12 +124,27 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Django Rest Framework
+# https://www.django-rest-framework.org
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # TokenAuth must come first, otherwise we send 403 responses on bad tokens when we want 401
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",  # for browsable api
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "project.permissions.AllowNone",
+    ],
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = getenv("TIME_ZONE", "America/Vancouver")
 
 USE_I18N = True
 
@@ -194,7 +195,7 @@ LOGGING = {
 APP_NAME = getenv("APP_NAME")
 
 WEB_URL = getenv("WEB_URL")
-RESET_PASSWORD_URL = "{}{}".format(WEB_URL, "/auth/reset-password/{reset_token}/{user_id}")
+RESET_PASSWORD_URL = f"{WEB_URL}/auth/reset-password/{'{reset_token}'}/{'{user_id}'}"
 PASSWORD_RESET_TIMEOUT = 60 * 60  # 1 hour
 
 POSTMARK_API_KEY = getenv("POSTMARK_API_KEY")
